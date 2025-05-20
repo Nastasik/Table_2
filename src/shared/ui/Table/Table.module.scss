@@ -1,0 +1,33 @@
+
+.Table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.th {
+  padding: 12px;
+  background: rgb(255, 230, 0);
+  border: 1px solid white;
+  flex: 1;
+}
+
+.thead {
+  position: sticky;
+  top: 0;
+}
+
+.tbody {
+  padding: 0px;
+}
+
+.tr {
+  display: flex;
+  align-items: stretch;
+}
+
+.td {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(231, 231, 231, 0.596);
+}

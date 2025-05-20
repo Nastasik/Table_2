@@ -1,0 +1,28 @@
+.Button {
+    cursor: pointer;
+    margin: 0;
+    border: none;
+    border-radius: 6px;
+}
+
+.primary {
+    background: lightblue; //var(--primary-color);
+}
+
+.secondary {
+    background: pink; //var(--inverted-primary-color);
+}
+
+.clear {
+    background: none;
+    border: none;
+    width: 25px;
+    height: 25px;
+}
+
+.selected {
+    background: lightseagreen;
+    border: 1px solid rgb(66, 144, 145);
+    border-radius: 4px;
+  }
+

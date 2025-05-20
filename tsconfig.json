@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "./dist/", 
+        "paths": {
+          "@*": ["./src/*"], //отсюда будут начинаться абсолютные пути
+        },
+        "noImplicitAny": true, 
+        "module": "esnext",
+        "target": "esnext", 
+        "jsx": "react-jsx", 
+        "allowJs": true, 
+        "strict": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true, 
+        "esModuleInterop": true, 
+        "isolatedModules": true
+    },
+    "ts-node": { 
+        "compilerOptions": {
+          "module": "CommonJS"
+        }
+      },
+      "include": [
+        "./src/**/*.ts",
+        "./src/**/*.tsx"
+,       "global.d.ts"      ],
+  }
