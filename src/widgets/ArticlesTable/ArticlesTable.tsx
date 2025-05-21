@@ -1,6 +1,6 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { ChangeEvent, memo, useCallback, useState } from "react";
 import * as cls from "./ArticlesTable.module.scss";
-import { Pagination } from "@features";
+import { Pagination, SelectOffset } from "@features";
 import { Table } from "@shared/ui";
 import { TABLE_HEAD } from "./const/tableHead";
 import { useGetArticlesQuery } from "./api/articleTableApi";
@@ -22,6 +22,11 @@ export const ArticlesTable = memo(({}) => {
         setPage(Number(target.innerText))
     }, [])
 
+    const handlerChangeOffset = useCallback(({ target }: ChangeEvent<HTMLSelectElement>) => {
+        setOffset(Number(target.value))
+        setPage(1)
+    }, [])
+
     if(error) {
         return 'Error'
     }
@@ -38,13 +43,15 @@ export const ArticlesTable = memo(({}) => {
         <div className={cls.ArticlesTable}>
             <Table head={TABLE_HEAD} data={data.articles} />
             <div className={cls.wrapper}>
+                <div className={cls.total}>{`Total: ${data.total}`}</div>
                 <Pagination 
                     offset={offset} 
                     total={data.total} 
                     page={page} 
                     onClickNextButton={handlerClickNextButton} 
                     onClickPrevButton={handlerClickPrevButton} 
-                    onClickNumButton={handlerClickNumButton}/> 
+                    onClickNumButton={handlerClickNumButton}/>
+                 <SelectOffset onChange={handlerChangeOffset} />       
             </div>
         </div>
     )

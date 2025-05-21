@@ -1,0 +1,15 @@
+.Select {
+    cursor: pointer;
+    margin: 0;
+    background: rgb(231, 177, 252);
+    border: none;
+    border-radius: 6px;
+    height: 25px;
+}
+
+.selected {
+    padding: 0;
+    background: lightseagreen;
+    border: 1px solid rgb(66, 144, 145);
+    border-radius: 4px;
+}
