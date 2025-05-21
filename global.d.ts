@@ -14,3 +14,5 @@ declare module '*.svg' {
 }
 
 declare module "*.png";
+
+declare const __API__: string;

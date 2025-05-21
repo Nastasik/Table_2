@@ -24,18 +24,18 @@ server.get('/articles', (req, res) => {
         const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
         const { articles = [] } = db;
 
-        const startPos = (page-1)*offset;
-        const endPos = startPos+offset;
+        const startPos = (Number(page)-1)*Number(offset);
+        const endPos = startPos+Number(offset);
         const upData = articles.slice(startPos, endPos);
 
         if (upData) {
             return res.json({ articles: upData, page, offset, total: articles.length});
         }
 
-        return res.status(403).json({ message: 'articles not found' });
+        return res.status(403).json({ articles: [], message: 'articles not found' });
     } catch (e) {
         console.log(e);
-        return res.status(500).json({ message: e.message });
+        return res.status(500).json({ articles: [], message: e.message });
     }
 });
 

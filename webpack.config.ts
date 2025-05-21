@@ -1,5 +1,6 @@
 import { resolve as _resolve} from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import webpack from 'webpack';
 import path from 'path';
 
 export type BuildMode = 'production' | 'development';
@@ -83,7 +84,10 @@ export default (env: BuildEnv) => {
         plugins: [
             new HtmlWebpackPlugin({
                 template: path.resolve(__dirname, 'public', 'index.html'),
-            })
+            }),
+            new webpack.DefinePlugin({ // прокидывает переменные из webpack в приложение
+                __API__: JSON.stringify('http://localhost:8000'),
+            }),
         ]
     }
 }

@@ -11,11 +11,17 @@ interface ButtonProps {
     theme?: ButtonTheme;  
     text: string;
     selected?: boolean;
+    disabled?: boolean;
+    onClick: (args?: any) => void;
 }
 
-export const Button = memo(({ theme=ButtonTheme.PRIMARY, text, selected=false }: ButtonProps) => {
+export const Button = memo(({ theme=ButtonTheme.PRIMARY, text, disabled, selected=false, onClick }: ButtonProps) => {
   return (
-    <button type="button" className={`${cls.Button} ${cls[theme]} ${selected ? cls.selected : ''}`}>
+    <button 
+        type="button" 
+        disabled={disabled}
+        onClick={onClick} 
+        className={`${cls.Button} ${cls[theme]} ${selected ? cls.selected : ''}`}>
       {text}
     </button>
   )
