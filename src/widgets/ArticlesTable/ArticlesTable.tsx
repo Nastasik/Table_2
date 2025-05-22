@@ -1,31 +1,45 @@
-import React, { ChangeEvent, memo, useCallback, useState } from "react";
+import React, { ChangeEvent, memo, useCallback, useEffect, useState } from "react";
 import * as cls from "./ArticlesTable.module.scss";
 import { Pagination, SelectOffset } from "@features";
 import { Table } from "@shared/ui";
 import { TABLE_HEAD } from "./const/tableHead";
-import { useGetArticlesQuery } from "./api/articleTableApi";
+import { useDispatch, useSelector } from "react-redux";
+import { getArticlesData, getArticlesError, getArticlesIsLoading, getArticlesOffset, getArticlesPage, getArticlesTotal } from "./model/selectors/articlesSelectors";
+import { AppDispatch } from "@app/providers/StoreProvider/config/store";
+import { articlesActions } from "./model/slices/articlesSlice";
+import { fetchArticles } from "./model/services/fetchArticles";
 
 export const ArticlesTable = memo(({}) => {
-    const [page, setPage] = useState(1);
-    const [offset, setOffset] = useState(3);
-    const { data, isLoading, error} = useGetArticlesQuery({ page, offset })
+    const page = useSelector(getArticlesPage);
+    const offset = useSelector(getArticlesOffset);
+    const data = useSelector(getArticlesData);
+    const total = useSelector(getArticlesTotal);
+    const isLoading = useSelector(getArticlesIsLoading);
+    const error = useSelector(getArticlesError);
+    const dispatch = useDispatch<AppDispatch>();
+    
+    useEffect(() => { dispatch(fetchArticles()) }, [])
 
     const handlerClickNextButton = useCallback(() => {
-        setPage(page+1)
-    }, [page])
+        dispatch(articlesActions.setPage(page+1))
+        dispatch(fetchArticles())
+    }, [page, dispatch])
 
     const handlerClickPrevButton = useCallback(() => {
-        setPage(page-1)
-    }, [page])
+        dispatch(articlesActions.setPage(page-1))
+        dispatch(fetchArticles())
+    }, [page, dispatch])
 
     const handlerClickNumButton = useCallback(({ target }: any) => {
-        setPage(Number(target.innerText))
-    }, [])
+        dispatch(articlesActions.setPage(Number(target.innerText)))
+        dispatch(fetchArticles())
+    }, [dispatch])
 
     const handlerChangeOffset = useCallback(({ target }: ChangeEvent<HTMLSelectElement>) => {
-        setOffset(Number(target.value))
-        setPage(1)
-    }, [])
+        dispatch(articlesActions.setOffset(Number(target.value)))
+        dispatch(articlesActions.setPage(1))
+        dispatch(fetchArticles())
+    }, [dispatch])
 
     if(error) {
         return 'Error'
@@ -41,12 +55,12 @@ export const ArticlesTable = memo(({}) => {
 
     return (
         <div className={cls.ArticlesTable}>
-            <Table head={TABLE_HEAD} data={data.articles} />
+            <Table head={TABLE_HEAD} data={data} />
             <div className={cls.wrapper}>
-                <div className={cls.total}>{`Total: ${data.total}`}</div>
+                <div className={cls.total}>{`Total: ${total}`}</div>
                 <Pagination 
                     offset={offset} 
-                    total={data.total} 
+                    total={total} 
                     page={page} 
                     onClickNextButton={handlerClickNextButton} 
                     onClickPrevButton={handlerClickPrevButton} 

@@ -1,10 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { articlesTableApi } from "@widgets/ArticlesTable/api/articleTableApi";
+import { articlesReducer } from "@widgets/ArticlesTable/model/slices/articlesSlice";
+import axios from "axios";
+
+export const $api = axios.create({
+    baseURL: __API__,
+});
 
 export const store = configureStore({ 
     reducer: { 
       // Add the generated reducer as a specific top-level slice  
-      [articlesTableApi.reducerPath]: articlesTableApi.reducer,  
+      articles: articlesReducer,  
     }, 
   
     // Adding the api middleware enables caching, invalidation, polling, 
@@ -12,5 +17,14 @@ export const store = configureStore({
     // and other useful features of `rtk-query`. 
   
     middleware: (getDefaultMiddleware) =>   
-      getDefaultMiddleware().concat(articlesTableApi.middleware),   
+        getDefaultMiddleware({
+            thunk: {
+                extraArgument: {
+                    api: $api,
+                },
+            },
+        }),   
   }) 
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
